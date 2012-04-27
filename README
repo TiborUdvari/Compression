@@ -1,0 +1,10 @@
+Small compression project. Implementation of compression algorithmes.
+
+Iterations  : 
+	Statistics generation
+	Huffman encoding
+	Huffman Decoding 
+	
+
+Statistics Generation 
+* Get the characters and see their frequency
