@@ -31,6 +31,12 @@ def updateDictionaryCoding(dictionary, key, value):
             dictionary[key].insert(0,value)
     return dictionary
 
+def hasFoundValueInDict(dictionnary, searchedElem):
+    for k,v in dictionnary.items():
+        if v == searchedElem : 
+            return k
+    return False
+
 #---------------------------------------- Printing functions -----------------------------------------------#
 
 def printStats(statistics):
@@ -91,10 +97,11 @@ def encodeFile(fileName, destinationFileName):
         
     destinationFile = open(destinationFileName, 'w')
     destinationFile.write(str(encoding) + "\n") 
+    #TODO change this to binary
 
     while True:
         c = file.read(1)
-        if not c : break
+        if c == "" : break
         for i in encoding[c] : 
             destinationFile.write(str(i)) 
     destinationFile.close()
@@ -116,25 +123,35 @@ def decodeFile(codedFileName, destinationFileName):
             sys.exit(e)
             print(e)
         myList.append(number)
-        foundChar = findValueInDict(encoding, myList)
+        foundChar = hasFoundValueInDict(encoding, myList)
         if foundChar:
-            print("FOund char " + foundChar)
             destinationFile.write(foundChar)
             myList[:] = []     
         
     codedFile.close()
     destinationFile.close()
 
-def findValueInDict(dictionnary, searchedElem):
-    for k,v in dictionnary.items():
-        if v == searchedElem : 
-            return k
-    return False
+def isEgal(fileName1, fileName2):
+    file1=open(fileName1, 'r')
+    textFile1 = file1.read()
+    file2 = open(fileName2, 'r')
+    textFile2 = file2.read()
+    return textFile1 == textFile2
     
 if __name__ == "__main__":
-
-    encodeFile("testHuffman.txt" ,"anotherFileName.txt")
-    decodeFile("anotherFileName.txt", "huffmanDecoded.txt")
     
+    #fileNameToEncode = "testHuffman.txt"
+    #destinationFileName = fileToDecode ="destinationHuffman.txt"
+    #decodedFileName = "huffmanDecoded.txt"
     
+    fileNameToEncode = "loremIpsum.txt"
+    destinationFileName = fileToDecode ="destinationLoremIpsum.txt"
+    decodedFileName = "loremIpsumDecoded.txt"
     
+    encodeFile(fileNameToEncode ,destinationFileName)
+    decodeFile(fileToDecode, decodedFileName)
+    
+    if isEgal(fileNameToEncode, decodedFileName):
+        print("Huffman encoding and decoding succesfully performed")
+    else:
+        print("Files are not equal")
