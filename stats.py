@@ -1,5 +1,6 @@
 import sys
 import ast
+import math
 #----------------------------------------  Helper functions  -----------------------------------------------#
 def openFile(fileName):
     try:
@@ -37,6 +38,27 @@ def hasFoundValueInDict(dictionnary, searchedElem):
             return k
     return False
 
+def get_p(symbole, fileName):
+    stats = getStatistics(fileName)
+    frequency = stats[symbole]
+    totalCharacters = 0
+    for value in stats.values():
+        totalCharacters += value
+    probability = frequency/totalCharacters
+    print("Probability", probability)
+    return probability
+    
+def get_q(symbole,fileName):
+    return -math.log(get_p(symbole,fileName),2)
+
+def get_entropy(fileName):
+    entropy = 0
+    stats = getStatistics(fileName)
+    for symbole in stats.keys():
+        entropy += get_p(symbole, fileName) * get_q(symbole,fileName)
+    return entropy
+    
+    
 #---------------------------------------- Printing functions -----------------------------------------------#
 
 def printStats(statistics):
@@ -143,7 +165,7 @@ if __name__ == "__main__":
     #fileNameToEncode = "testHuffman.txt"
     #destinationFileName = fileToDecode ="destinationHuffman.txt"
     #decodedFileName = "huffmanDecoded.txt"
-    
+    """
     fileNameToEncode = "loremIpsum.txt"
     destinationFileName = fileToDecode ="destinationLoremIpsum.txt"
     decodedFileName = "loremIpsumDecoded.txt"
@@ -155,3 +177,8 @@ if __name__ == "__main__":
         print("Huffman encoding and decoding succesfully performed")
     else:
         print("Files are not equal")
+    """
+    fileName = "loremIpsum.txt"
+    #get_p("l",fileName)
+    #print(get_q(";",fileName))
+    print("Entropy:",get_entropy(fileName))
